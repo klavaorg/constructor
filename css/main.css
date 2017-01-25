@@ -1,0 +1,12 @@
+/*html {
+	min-height: 100vh;
+	position: relative;
+}*/
+.btnToolbar {
+	position: fixed;
+	bottom: 10px;
+	left: 10px;
+}
+.hide {
+	display: none;
+}
