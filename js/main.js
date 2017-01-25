@@ -1,5 +1,7 @@
 window.onload = function () {
-	var s = Snap(1600, 1000);
+	var s = Snap(1600, 1000).attr({
+		id: 'svgCanvas',
+	});
 	var caps = 15/2;
 	var indent = 1.5;
 
@@ -21,11 +23,21 @@ window.onload = function () {
 		}
 	];
 
+	// подгружаем корпус
+	var keyboardCase;
+	Snap.load('/cases/ladoshki.svg', function (loadedFragment) {
+		keyboardCase = s.append(loadedFragment);
+		$('#svgCanvas svg').attr({
+			id: 'keyboardCase',
+			class: 'hide'
+		});
+	});
+
 	var leftHalf = s.g();
 	for (y=0;y<4;y++) { // столбцы
 		var col = s.g();
 		for (i=0;i<4;i++) { // строки
-			var cap = s.circle(y*(caps*2+indent)+caps+'mm', i*(caps*2+indent)+caps+'mm', caps+'mm', caps+'mm')
+			var keyCap = s.circle(y*(caps*2+indent)+caps+'mm', i*(caps*2+indent)+caps+'mm', caps+'mm', caps+'mm')
 				.attr({
 					fill: 'rgba(185, 185, 185, 0.19)',
 					stroke: '#000',
@@ -33,25 +45,24 @@ window.onload = function () {
 					class: 'keyCap'
 				});
 			if ((i+y)%2==0) {
-				var switcherX = y*(caps*2+indent)+caps-switches[0].x/2+'mm';
-				var switcherY = i*(caps*2+indent)+caps-switches[0].y/2+'mm';
-				var switcherWidth = switches[0].x+'mm';
-				var switcherHeight = switches[0].y+'mm';
+				var keySwitchX = y*(caps*2+indent)+caps-switches[0].x/2+'mm';
+				var keySwitchY = i*(caps*2+indent)+caps-switches[0].y/2+'mm';
+				var keySwitchWidth = switches[0].x+'mm';
+				var keySwitchHeight = switches[0].y+'mm';
 			} else {
-				var switcherX = y*(caps*2+indent)+caps-switches[0].y/2+'mm';
-				var switcherY = i*(caps*2+indent)+caps-switches[0].x/2+'mm';
-				var switcherWidth = switches[0].y+'mm';
-				var switcherHeight = switches[0].x+'mm';
+				var keySwitchX = y*(caps*2+indent)+caps-switches[0].y/2+'mm';
+				var keySwitchY = i*(caps*2+indent)+caps-switches[0].x/2+'mm';
+				var keySwitchWidth = switches[0].y+'mm';
+				var keySwitchHeight = switches[0].x+'mm';
 			};
-			// switch зарезервирован в js, поэтому switcher
-			var switcher = s.rect(switcherX, switcherY, switcherWidth, switcherHeight)
+			var keySwitch = s.rect(keySwitchX, keySwitchY, keySwitchWidth, keySwitchHeight)
 				.attr({
 					fill: 'transparent',
 					stroke: '#000',
 					strokeWidth: '0.1mm',
 					class: 'keySwitch'
 				});
-			var key = s.g(switcher, cap).attr({
+			var key = s.g(keySwitch, keyCap).attr({
 				class: 'key'
 			});
 			col.add(key).attr({
@@ -75,5 +86,8 @@ window.onload = function () {
 	});
 	$('#toggleKeyCaps').click(function(){
 		$('.keyCap').toggleClass('hide');
+	});
+	$('#toggleKeyboardCase').click(function(){
+		$('#keyboardCase').toggleClass('hide');
 	});
 };
