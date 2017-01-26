@@ -25,12 +25,11 @@ window.onload = function () {
 
 	// подгружаем корпус
 	var keyboardCase;
-	Snap.load('/cases/ladoshki.svg', function (loadedFragment) {
-		keyboardCase = s.append(loadedFragment);
-		$('#svgCanvas svg').attr({
+	Snap.load('ladoshki.svg', function(loadedFragment) {
+		s.g().attr({
 			id: 'keyboardCase',
 			class: 'hide'
-		});
+		}).append(loadedFragment).drag();
 	});
 
 	var leftHalf = s.g();
@@ -77,7 +76,7 @@ window.onload = function () {
 	rightHalfMatrix.translate(700, 0).scale(-1, 1);
 	var rightHalf= leftHalf.clone().transform(rightHalfMatrix);
 
-	// buttons
+	// кнопки
 	$('#svgSave').click(function(){
 		saveAs(new Blob([ unescape($('svg')[0].outerHTML) ], {type:"application/svg+xml"}), "keyboard.svg")
 	});
